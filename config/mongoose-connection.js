@@ -1,16 +1,18 @@
-const mongoose = require('mongoose') ;
-const debug = require('debug')("development:mongoose") ;
-const config = require('config') ;
+const mongoose = require('mongoose');
+const debug = require('debug')('development:mongoose');
 
-mongoose.connect(`${config.get("MONGODB_URI")}/Scratch`) 
-.then(function(){
-    debug("connected");
-    
+// Use environment variable directly
+const dbURI = `${process.env.MONGODB_URI}/Scratch`;
+
+mongoose.connect(dbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 })
-
-.catch(function(err){
-    debug(err);
-    
+.then(() => {
+    debug('MongoDB connected successfully');
 })
+.catch((err) => {
+    debug('MongoDB connection error:', err);
+});
 
-module.exports = mongoose.connection ;  
+module.exports = mongoose.connection;
